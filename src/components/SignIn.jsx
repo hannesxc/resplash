@@ -13,7 +13,7 @@ function SignIn() {
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
       firebase.auth.GithubAuthProvider.PROVIDER_ID
     ],
-    signInSuccessUrl: `/home`,
+    signInSuccessUrl: `/resplash/home`,
     tosUrl: '/',
     privacyPolicyUrl: '/'
   }

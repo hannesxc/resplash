@@ -11,9 +11,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthProvider>
     <Router>
       <Routes>
-        <Route path='/signin' element={ <SignIn /> } />
+        <Route path='/resplash/signin' element={ <SignIn /> } />
         <Route path='/resplash' element={ <Welcome /> } />
-        <Route path='/home' element={ <App /> } />
+        <Route path='/resplash/home' element={ <App /> } />
       </Routes>
     </Router>
   </AuthProvider>
