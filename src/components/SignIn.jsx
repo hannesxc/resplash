@@ -19,7 +19,7 @@ function SignIn() {
   }
 
   return (
-    <div className="bg-indigo-300 flex justify-center h-screen items-center">
+    <div className="bg-gradient-to-r to-orange-200 from-purple-400 flex justify-center h-screen items-center">
       <div className="flex items-center flex-col w-96 h-96 m-5">
         <p className="py-9">Sign in using one of the methods below!</p>
         <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />

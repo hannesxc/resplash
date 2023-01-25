@@ -1,9 +1,10 @@
 import { addDoc, collection, onSnapshot, query, where } from 'firebase/firestore'
-import { ref, listAll, getDownloadURL } from 'firebase/storage'
+import { ref, listAll, getDownloadURL, getMetadata } from 'firebase/storage'
 import { useContext, useEffect, useState } from 'react'
 import { db, storage } from '../config'
 import { AuthContext } from '../contexts/AuthContext'
 import { PropsContext } from '../contexts/PropsContext'
+import Modal from './Modal'
 import Navbar from './Navbar'
 import Post from './Post'
 
@@ -11,7 +12,7 @@ function Home() {
 
   const { user } = useContext(AuthContext)
   const [ images, setImages ] = useState([])
-  const [ search, setSearch ] = useState('')
+  const [ image, setImage ] = useState(null)
   const imagesRef = ref(storage, 'images')
 
   useEffect(() => {
@@ -21,9 +22,11 @@ function Home() {
   const fetchData = () => {
     setImages([])
     listAll(imagesRef).then( res => {
-      res.items.forEach( itemRef => {
+      res.items.forEach(itemRef => {
         getDownloadURL(itemRef).then( url => {
-          setImages( images => [...images, { url: url }])
+          getMetadata(itemRef).then( metadata => {
+            setImages( images => [...images, { url: url, name: metadata.name, size: metadata.size, created: metadata.timeCreated }])
+          })
         }).catch( err => {})
       })
     }).catch( err => {})
@@ -34,34 +37,32 @@ function Home() {
   }
 
   return (
-    <PropsContext.Provider value={{ onSearch }}>
+    <PropsContext.Provider value={{ onSearch, image, setImage }}>
       <Navbar />
-      {user ?
         <section className="mx-4 sm:mx-6 p-6 my-6 rounded-xl bg-red-100">
-          <div className="flex justify-between pb-3">
-            <p className="text-lg">Welcome, {user.displayName}</p>
-            <p className="text-lg hidden md:block">Last Login: {user.metadata.lastSignInTime}</p>
+        {user ? 
+          <>
+            <div className="flex justify-between pb-3">
+              <p className="text-lg">Welcome, {user.displayName}</p>
+              <p className="text-lg hidden md:block">Last Login: {user.metadata.lastSignInTime}</p>
+            </div>
+            <div className="flex justify-between items-center">
+              <img className="rounded-full h-16" src={user.photoURL} alt='profile picture' />
+              <Post />
+            </div>
+          </> :
+          <div>
+            Please sign in to upload or interact with the community.
           </div>
-          <div className="flex justify-between items-center">
-            <img className="rounded-full h-16" src={user.photoURL} alt='profile picture' />
-            <button className="flex justify-center items-center px-4 py-2 w-28 h-11 rounded-xl bg-red-400">
-              Post
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ml-2 w-5 h-5 -rotate-45">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-              </svg>
-            </button>
-          </div>
-        </section> :
-        <section>
-
-        </section>
-      }
+        }
+        </section> 
       {images.length ?
         <section className="sm:container mx-4 sm:mx-auto my-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {images.map((image, idx) => {
-              return <img className="object-cover" key={idx} src={image.url} />
+              return <img className="object-cover cursor-pointer" key={idx} src={image.url} onClick={() => setImage(image) } />
             })}
+            <Modal />
           </div>
         </section> :
         <section className='flex justify-center items-center my-40'>
