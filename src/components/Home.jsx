@@ -1,6 +1,7 @@
-import { addDoc, collection, onSnapshot, query, where } from 'firebase/firestore'
+import { collection, doc, getDoc, onSnapshot, query, setDoc, where } from 'firebase/firestore'
 import { ref, listAll, getDownloadURL, getMetadata } from 'firebase/storage'
 import { useContext, useEffect, useState } from 'react'
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 import { db, storage } from '../config'
 import { AuthContext } from '../contexts/AuthContext'
 import { PropsContext } from '../contexts/PropsContext'
@@ -12,12 +13,30 @@ function Home() {
 
   const { user } = useContext(AuthContext)
   const [ images, setImages ] = useState([])
-  const [ image, setImage ] = useState(null)
+  const [image, setImage] = useState(null)
+  const collectionRef = collection(db, 'users')
   const imagesRef = ref(storage, 'images')
 
   useEffect(() => {
     fetchData()
   }, [])
+
+  useEffect(() => {
+    if (user) {
+      registerUser()
+    }
+  }, [user])
+
+  const registerUser = async () => {
+    const newUser = doc(collectionRef, user.uid)
+    const userSnap = await getDoc(newUser)
+    if (!userSnap.exists()) {
+      await setDoc(newUser, {
+        uid: user.uid,
+        images: []
+      })
+    }
+  }
 
   const fetchData = () => {
     setImages([])
@@ -39,7 +58,7 @@ function Home() {
   return (
     <PropsContext.Provider value={{ onSearch, image, setImage }}>
       <Navbar />
-        <section className="mx-4 sm:mx-6 p-6 my-6 rounded-xl bg-red-100">
+      <section className="mx-4 sm:mx-6 p-6 my-6 rounded-xl bg-red-100">
         {user ? 
           <>
             <div className="flex justify-between pb-3">
@@ -55,15 +74,17 @@ function Home() {
             Please sign in to upload or interact with the community.
           </div>
         }
-        </section> 
+      </section>
       {images.length ?
-        <section className="sm:container mx-4 sm:mx-auto my-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {images.map((image, idx) => {
-              return <img className="object-cover cursor-pointer" key={idx} src={image.url} onClick={() => setImage(image) } />
-            })}
-            <Modal />
-          </div>
+        <section className="max-w-screen-2xl mx-auto my-5 px-4">
+          <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 600: 2, 1000: 3 }}>
+            <Masonry gutter="10px">
+              {images.map( (image, idx) => {
+                return <img className="cursor-pointer" key={idx} src={image.url} alt={image.name} onClick={() => setImage(image)} />
+              })}
+            </Masonry>
+          </ResponsiveMasonry>
+          <Modal />
         </section> :
         <section className='flex justify-center items-center my-40'>
           <svg className="inline w-10 h-10 mr-2 text-red-300 animate-spin dark:text-gray-600 fill-purple-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
