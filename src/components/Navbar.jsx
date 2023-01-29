@@ -1,13 +1,14 @@
-import { useState } from "react"
-import { useContext } from "react"
+import { useState, useContext } from "react"
 import { Link } from "react-router-dom"
 import { AuthContext } from "../contexts/AuthContext"
 import { PropsContext } from "../contexts/PropsContext"
+import Post from "./Post"
 
 function Navbar() {
   
   const { user, auth } = useContext(AuthContext)
-  const { onSearch } = useContext(PropsContext)
+  const { onSearch, setShowModal } = useContext(PropsContext)
+  const [ toggle, setToggle ] = useState(false)
   const [ search, setSearch ] = useState("")
 
   return (
@@ -22,13 +23,45 @@ function Navbar() {
           <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clipRule="evenodd" />
         </svg>
         <input className="w-5/6 ml-5 focus:outline-none" type='text' placeholder='Search' value={search} onChange={e => setSearch(e.target.value)} />
-        <button className="text-white bg-black h-10 w-1/3 sm:w-1/6 rounded-r-xl" onClick={e => onSearch(search)}>Go</button>
+        <button className="text-white bg-black h-10 w-1/3 sm:w-1/5 rounded-r-xl" type="button" onClick={() => onSearch(search)}>Go</button>
       </div>
-      {!user ? (
-        <Link to="/resplash/signin">Sign-In</Link>
-      ) : (
-        <Link to="/resplash/home" onClick={() => auth.signOut()}>Sign Out</Link>
-      )}
+      <div className="relative inline-block">     
+        <button type="button" onClick={() => setToggle(!toggle)} className="inline-flex mt-1" title="Account">
+          {!user ?
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg> :
+            <img className="rounded-full h-12" src={user.photoURL} alt="profile" />
+          }
+        </button>
+        {toggle ?
+          <div className="text-gray-700 absolute right-0 z-10 mt-2 w-56 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5">
+            {user ?
+              <>
+                <div className="pt-4">
+                  <p className="block px-4 text-sm">Signed in as:</p>
+                  <div className="block px-4 py-2 text-sm">
+                    <p>{user.displayName}</p>
+                    <p>{user.email}</p>
+                  </div>
+                  <div className="py-1 border-t border-gray-200">
+                    <Link to="/resplash/dashboard" className="block px-4 py-2 text-sm hover:bg-red-100" >Dashboard</Link>
+                    <p className="block px-4 py-2 text-sm cursor-pointer hover:bg-red-200" onClick={() => setShowModal(true)} >Upload</p>
+                    <Post />
+                  </div>
+                </div>
+                <button className="w-full block px-4 py-3 text-left text-sm border-t border-gray-200 hover:bg-red-100" onClick={() => {
+                  auth.signOut()
+                  setToggle(false)
+                }}>
+                  Sign Out
+                </button>
+              </> :
+              <Link to="/resplash/signin" className="block px-4 py-3 text-sm border-t border-gray-200 hover:bg-red-100">Sign In</Link>
+            }
+          </div>: null
+        }
+      </div>
     </nav>
   )
 }
