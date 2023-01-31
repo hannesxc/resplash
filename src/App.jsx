@@ -18,7 +18,7 @@ function App() {
       <Router>
         <Routes>
           <Route path='/resplash/signin' element={ <SignIn /> } />
-          <Route path='/resplash' element={ <Welcome /> } />
+          <Route path='/' element={ <Welcome /> } />
           <Route path='/resplash/home' element={ <Home /> } />
           <Route path='/resplash/dashboard' element={ <Dashboard /> } />
         </Routes>

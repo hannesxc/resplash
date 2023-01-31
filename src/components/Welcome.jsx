@@ -20,7 +20,7 @@ function Welcome() {
         Video isn't supported, please upgrade your browser.
       </video>
       <div className="relative w-fit m-4 md:ml-40 flex-grow flex justify-center items-center md:items-start flex-col">
-        <Link to='/resplash'>
+        <Link to='/'>
           <h1 className="tracking-wider font-bold bg-clip-text text-transparent bg-gradient-to-r hover:bg-gradient-to-t to-teal-400 from-lime-700 text-6xl leading-loose italic">
             resplash
           </h1>

@@ -57,9 +57,9 @@ function Dashboard() {
                       <p>{user.displayName}</p>
                       <p>{user.email}</p>
                     </div>
-                    <Link to="/resplash/home" className="block px-4 py-2 border-t border-gray-200 text-sm cursor-pointer hover:bg-red-100">Home</Link>
+                    <Link to="/resplash/home" className="block px-4 py-2 border-t border-gray-200 text-sm cursor-pointer hover:bg-black hover:text-white">Home</Link>
                   </div>
-                  <Link to="/resplash/home" className="block px-4 py-3 text-sm border-t border-gray-200 hover:bg-red-100" onClick={() => auth.signOut()}>Sign Out</Link>
+                  <Link to="/resplash/home" className="block px-4 py-3 text-sm border-t border-gray-200 hover:bg-black hover:text-white" onClick={() => auth.signOut()}>Sign Out</Link>
                 </div> : null
               }
             </div>
