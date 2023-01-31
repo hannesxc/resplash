@@ -31,7 +31,8 @@ function Post() {
       const metadata = {
         customMetadata: {
           'uploadedBy': user.displayName,
-          'profile': user.photoURL
+          'profile': user.photoURL,
+          'description': desc
         }
       }
       const uploadTask = uploadBytes(imagesRef, e.target.files[0], metadata)
@@ -40,7 +41,15 @@ function Post() {
         setImage(null)
         getDownloadURL(snapshot.ref).then( url => {
           getMetadata(imagesRef).then( metadata => {
-            const uploadImage = { url: url, name: metadata.name, description: desc, size: metadata.size, created: metadata.timeCreated }
+            const uploadImage = {
+              url: url,
+              name: metadata.name,
+              description: metadata.customMetadata.description,
+              size: metadata.size,
+              created: metadata.timeCreated,
+              profile: metadata.customMetadata.profile,
+              uploadedBy: metadata.customMetadata.uploadedBy
+            }
             updateUser(uploadImage)
           })
         })
@@ -71,18 +80,18 @@ function Post() {
                 </div>
                 <div className="relative p-3 mx-5 flex flex-col">
                   <p>Custom tags:</p>
-                  <textarea className="w-full p-2 my-2 text-sm border-red-700 border-2" value={desc} onChange={(e) => setDesc(e.target.value)} placeholder='Self explaining tags/description of image...'/>
-                  <input className='my-4' type='file' onChange={handlePreview}></input>
+                  <textarea className="w-full p-2 my-2 text-base border-black border-2" value={desc} onChange={(e) => setDesc(e.target.value)} placeholder='Self explaining tags/description of image...'/>
+                  <input className='my-4' type='file' accept='image/*' onChange={handlePreview}></input>
                   {image ? 
                     <img src={URL.createObjectURL(image.target.files[0])} width='45%'/> :
                     <p>No image selected.</p>
                   }
                 </div>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-                  <button className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm mr-1 mb-1 ease-linear transition-all duration-150" type="button" onClick={handleExit}>
+                  <button className="text-black background-transparent font-bold uppercase px-6 py-2 text-sm mr-1 mb-1 ease-linear transition-all duration-150" type="button" onClick={handleExit}>
                     Close
                   </button>
-                  <button className={`font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg mr-1 mb-1 ease-linear transition-all duration-150 ${image ? "bg-red-500 text-white active:bg-red-600" : "bg-red-100 text-black active:bg-red-300 cursor-not-allowed"}`} type="button" onClick={() => {
+                  <button className={`font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg mr-1 mb-1 ease-linear transition-all duration-150 ${image ? "bg-black text-white active:bg-gray-600/50" : "bg-gray-500/40 text-white active:bg-black cursor-not-allowed"}`} type="button" onClick={() => {
                     handleImage(image)
                     setShowModal(false)
                     setDesc('')

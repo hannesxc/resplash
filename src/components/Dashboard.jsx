@@ -38,8 +38,8 @@ function Dashboard() {
     <>
       {user ?
         <>
-          <nav className="flex justify-between items-center p-3 mx-4">
-            <Link to='/resplash'>
+          <nav className="max-w-[1920px] big-screen:mx-auto flex justify-between items-center p-3 mx-4">
+            <Link to='/resplash/home'>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25" />
               </svg>
@@ -64,7 +64,7 @@ function Dashboard() {
               }
             </div>
           </nav>
-          <section className="flex mx-4 sm:mx-6 p-6 my-6 rounded-xl bg-red-200">
+          <section className="max-w-[1920px] flex mx-4 sm:mx-6 big-screen:mx-auto p-6 my-6 rounded-xl bg-black/20">
             <img className='rounded-md w-28 md:w-40' src={user.photoURL} alt={user.displayName} />
             <div className="flex flex-col justify-between px-3 sm:px-6 py-1 text-base sm:text-lg">
               <p className="flex"><span className="hidden sm:block">Name:&ensp;</span>{user.displayName}</p>
@@ -73,10 +73,10 @@ function Dashboard() {
               <p className="flex text-sm sm:text-lg"><span className="hidden sm:block">Last Login:&ensp;</span>{user.metadata.lastSignInTime}</p>
             </div>
           </section>
-          <section>
+          <section className='max-w-[1920px] big-screen:mx-auto'>
             <div className="flex justify-around py-6 mx-4">
-              <button className={`w-1/3 pb-3 ${uploads ? "border-b-4  border-red-600" : ""}`} onClick={() => setUploads(true)}>Your Uploads</button>
-              <button className={`w-1/3 pb-3 ${!uploads ? "border-b-4 border-red-600" : ""}`} onClick={() => setUploads(false)}>Liked Posts</button>
+              <button className={`w-1/3 pb-3 ${uploads ? "border-b-4  border-black" : ""}`} onClick={() => setUploads(true)}>Your Uploads</button>
+              <button className={`w-1/3 pb-3 ${!uploads ? "border-b-4 border-black" : ""}`} onClick={() => setUploads(false)}>Liked Posts</button>
             </div>
             {!noData ? <DisplayImages data={data} /> : null}
             <p className={noData ? "text-lg text-center my-6" : "hidden"}>Nothing to display.</p>
