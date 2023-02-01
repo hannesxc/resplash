@@ -61,7 +61,7 @@ function Navbar() {
                   Sign Out
                 </button>
               </> :
-              <Link to="/resplash/signin" className="block px-4 py-3 text-sm border-t border-gray-200 hover:bg-red-100">Sign In</Link>
+              <Link to="/resplash/signin" className="block px-4 py-3 text-sm border-t border-gray-200 hover:bg-black hover:text-white">Sign In</Link>
             }
           </div>: null
         }

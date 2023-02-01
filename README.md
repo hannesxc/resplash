@@ -12,6 +12,6 @@ This app was bootstrapped by vite-react, and uses TailwindCSS for styling, OAuth
   
 Fork this repo, and clone it to your local machine. Create an .env.local file in base directory, and put in your firebase config keys with their values following the respective key names in `config.js` file. Make sure you have npm installed prior to executing these commands.  
 
-> `npm install --f` to install the required dependancies. There's a firebaseui conflict (it's a third party library unmaintained for a long time, doesn't go too well with latest react versions), hence the --force flag to overlook the warnings/peer conflicts.  
+> `npm install` to install the required dependancies.  
   
 > `npm run dev` to run the app on your localhost.  

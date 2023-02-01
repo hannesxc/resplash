@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
+import StyledFirebaseAuth from './StyledFirebaseAuth'
 import { AuthContext } from "../contexts/AuthContext"
 
 function SignIn() {
@@ -13,7 +13,7 @@ function SignIn() {
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
       firebase.auth.GithubAuthProvider.PROVIDER_ID
     ],
-    signInSuccessUrl: `/resplash/home`,
+    signInSuccessUrl: `/`,
     tosUrl: '/',
     privacyPolicyUrl: '/'
   }

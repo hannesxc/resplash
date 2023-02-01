@@ -3,7 +3,7 @@ import Dashboard from './components/Dashboard'
 import Home from './components/Home'
 import SignIn from './components/SignIn'
 import Welcome from './components/Welcome'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { HashRouter, Route, Routes } from 'react-router-dom'
 import { PropsContext } from './contexts/PropsContext'
 
 function App() {
@@ -15,14 +15,14 @@ function App() {
 
   return (
     <PropsContext.Provider value={{ images, setImages, imageSearch, setImageSearch, image, setImage, showModal, setShowModal }}>
-      <Router>
+      <HashRouter>
         <Routes>
           <Route path='/resplash/signin' element={ <SignIn /> } />
           <Route path='/' element={ <Welcome /> } />
           <Route path='/resplash/home' element={ <Home /> } />
           <Route path='/resplash/dashboard' element={ <Dashboard /> } />
         </Routes>
-      </Router>
+      </HashRouter>
     </PropsContext.Provider>
   )
 }
