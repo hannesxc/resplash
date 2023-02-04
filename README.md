@@ -2,7 +2,7 @@
   
 ## About  
   
-Unsplash like website, where unauthenticated users can browse the site freely for images (view them, download them, etc). Authentication on the other hand, is done through OAuth2, and authenticated users can upload images, like them, view metadata, etc. Users also have their own dashboard where they can view information about their account/likes/postings.  
+Unsplash like website, where unauthenticated users can browse the site freely for images (view them, download them, etc). Authentication on the other hand, is done through OAuth2, and authenticated users can upload images, like them, view metadata, etc. Users also have their own dashboard where they can view information about their account/likes/postings. Gallery has an infinite scroll approach. Need more images? Keep scrolling!  
   
 ## Project  
   

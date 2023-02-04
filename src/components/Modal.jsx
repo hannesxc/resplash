@@ -10,7 +10,6 @@ function Modal() {
   const { image, setImage } = useContext(PropsContext)
   const { user } = useContext(AuthContext)
   const [ like, setLike ] = useState(false)
-  const [ downloadURL, setDownloadURL ] = useState("")
 
   useEffect(() => {
     if (image) {
@@ -58,8 +57,12 @@ function Modal() {
       headers: {},
     })
     const blob = await result.blob()
-    const url = URL.createObjectURL(blob)
-    setDownloadURL(url)
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = image.name
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link) 
   }
 
   return (
@@ -89,7 +92,7 @@ function Modal() {
                   </div>
                 </div>
                 <div className="relative p-6 flex-auto">
-                  <img src={image.url} alt='Image' width='100%' />
+                  <img className="w-full max-h-[65vh]" src={image.url} alt='Image' />
                   <p className="mt-4">Tags: {image.description}</p>
                 </div>
                 <div className="flex items-center justify-between p-6 border-t border-solid border-slate-200 rounded-b">
@@ -101,12 +104,10 @@ function Modal() {
                     </p>
                   </div>
                   <p className="hidden sm:block">Size: {image.size / 1000} KB</p>
-                  <button className="p-1" onClick={handleDownload}>
-                    <a href={downloadURL} download={image.name} title='Download'>
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                      </svg>
-                    </a>
+                  <button className="p-1" onClick={handleDownload} title='Download'>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                    </svg>
                   </button>
                 </div>
               </div>

@@ -22,10 +22,10 @@ function InfiniteScrollPagination() {
   })
 
   const handleScroll = () => {
-    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return
-    
+    if (window.innerHeight + Math.round(document.documentElement.scrollTop) + 7 < document.documentElement.offsetHeight) return
     if (sliceStart + ITEMS_PER_PAGE > images.length) {
       setCurrentSlice(images)
+      window.removeEventListener('scroll', handleScroll)
     } else {
       setSliceStart(sliceStart + ITEMS_PER_PAGE)
       setCurrentSlice(images.slice(0, sliceStart + ITEMS_PER_PAGE))
